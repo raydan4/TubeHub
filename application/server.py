@@ -3,8 +3,8 @@ from flask import (
         render_template
 )
 from blueprints.searchAPI.search import search
-from blueprints.accountsAPI.accounts import accounts
-from blueprints.videosAPI.videos import videos
+from blueprints.accountAPI.account import account
+from blueprints.videoAPI.video import video
 
 app = Flask(__name__)
 
@@ -15,8 +15,8 @@ def index():
 
 
 app.register_blueprint(search, url_prefix='/search')
-app.register_blueprint(accounts, url_prefix='/accounts')
-app.register_blueprint(videos, url_prefix='/videos')
+app.register_blueprint(account, url_prefix='/account')
+app.register_blueprint(video, url_prefix='/video')
 
 if __name__ == '__main__':
     app.run(debug=True)
