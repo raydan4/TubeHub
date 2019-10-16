@@ -39,7 +39,7 @@ def show_manage():
         abort(404)
 
 @account.route('/manage/update')
-def show_upate():
+def show_update():
     try:
         return render_template('account/manage/update.html')
     except TemplateNotFound:
