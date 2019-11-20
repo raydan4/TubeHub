@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+    maria:
+        container_name: maria
+        hostname: maria
+        restart: always
+        build:
+            context: ./maria
+        networks:
+            - back
+        volumes:
+            - tube-db:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: changeme
+    tubehub:
+        container_name: tubehub
+        hostname: tubehub
+        command: gunicorn --bind 0.0.0.0:5000 server:app
+        restart: always
+        build:
+            context: ./application
+        networks:
+            - back
+            - front
+        depends_on:
+            - maria
+    nginx:
+        container_name: nginx
+        hostname: nginx
+        restart: always
+        build:
+            context: ./nginx
+        networks:
+            - front
+        ports:
+            - 80:80
+        depends_on:
+            - maria
+            - tubehub
+
+networks:
+    front:
+    back:
+volumes:
+    tube-db:
