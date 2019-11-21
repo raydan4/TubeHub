@@ -1,7 +1,10 @@
+import urllib.request 
+
 from flask import (
         Blueprint,
         Flask,
-        render_template
+        render_template,
+        request
 )
 from blueprints.searchAPI.search import search
 from blueprints.accountAPI.account import account
@@ -14,6 +17,38 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        u = User(username, password)
+        db.session.add(u)
+        db.session.commit()
+        return redirect("/login")
+    if request.method == 'GET':
+        return render_template("signup.html")
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        u = User(username, password)
+        db.session.add(u)
+        db.session.commit()
+        return redirect("/login")
+    if request.method == 'GET':
+        return render_template("signin.html")
+
+
+@app.route('/home', methods=['POST', 'GET'])
+def home():
+    if request.method == 'POST':
+        return redirect("/login")
+    if request.method == 'GET':
+        return render_template("home.html")
 
 app.register_blueprint(search, url_prefix='/search')
 app.register_blueprint(account, url_prefix='/account')
