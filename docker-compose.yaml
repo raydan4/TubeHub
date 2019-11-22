@@ -23,6 +23,8 @@ services:
         networks:
             - back
             - front
+        volumes:
+            - /usr/src/app
         depends_on:
             - maria
     nginx:
@@ -44,3 +46,4 @@ networks:
     back:
 volumes:
     tube-db:
+    application:

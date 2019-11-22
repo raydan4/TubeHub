@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
 
-video = Blueprint('video', __name__, template_folder='templates')
+video = Blueprint('video', __name__, template_folder='templates', static_folder='static')
 
 @video.route('/upload')
 def show_upload():
@@ -20,7 +20,11 @@ def show_delete():
 @video.route('/watch')
 def show_watch():
     try:
-        return render_template('/video/watch.html')
+        title = 'nice'
+        source = 'static/videos/classic.mp4'
+        filetype = 'video/mp4'
+        description = 'sad'
+        return render_template('/video/watch.html', title=title, source=source, filetype=filetype)
     except TemplateNotFound:
         abort(404)
 
