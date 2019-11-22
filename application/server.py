@@ -10,8 +10,6 @@ from flask import (
         redirect,
         flash
 )
-#from flask_mysqldb import MySQL
-#pymysql
 
 from blueprints.searchAPI.search import search
 from blueprints.accountAPI.account import account
@@ -38,16 +36,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
         date = datetime.now()
-
-
-        sql = "SELECT `username` FROM `users` WHERE `username` = %s;"
-        cur.execute(sql, (username))
-    
-        if cur.fetchone() == username:
-            #flash("Username already taken.")
-            return redirect("/")
-        
-        
+ 
         sql = "INSERT INTO `users` (`username`, `password`, `birthdate`, `email`, `sessionid`) VALUES (%s, %s, %s, %s, %s)"
         cur.execute(sql, (username, password, date, "example@email.com", "jkfal13k3jfdq"))
         connection.commit()
@@ -62,8 +51,6 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
-
 
         return redirect("/login")
     if request.method == 'GET':
