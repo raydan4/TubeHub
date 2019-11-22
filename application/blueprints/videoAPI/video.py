@@ -24,7 +24,7 @@ def show_watch():
         source = 'static/videos/classic.mp4'
         filetype = 'video/mp4'
         description = 'sad'
-        return render_template('/video/watch.html', title=title, source=source, filetype=filetype)
+        return render_template('/video/watch.html', title=title, source=source, filetype=filetype, description=description)
     except TemplateNotFound:
         abort(404)
 
