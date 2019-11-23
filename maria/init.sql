@@ -17,7 +17,6 @@ CREATE TABLE IF NOT EXISTS `video` (
     `description` varchar(64) NOT NULL,
     `location` varchar(64) NOT NULL,
     `filetype` varchar(64) NOT NULL,
-    `url` varchar(64) NOT NULL,
     PRIMARY KEY (`video_id`),
     FOREIGN KEY (userid) REFERENCES users(userid) ON UPDATE CASCADE
 ) engine=innodb;
