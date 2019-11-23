@@ -8,18 +8,53 @@ from flask import (
         jsonify
 )
 
+#Logan's potentially repetitive imports
+from flask import Flask
+from flask import Flask, flash, redirect, render_template, request, session, abort
+import os
+from sqlalchemy.orm import sessionmaker
+from tabledef import *
+
 from blueprints.searchAPI.search import search
 from blueprints.accountAPI.account import account
 from blueprints.videoAPI.video import video
 
 app = Flask(__name__)
+app.secret_key = os.urandom(12)
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+def home():
+    if not session.get('logged_in'):
+        return render_template('login.html')
+    else:
+        return render_template('home.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+
+    POST_USERNAME = str(request.form['username'])
+    POST_PASSWORD = str(request.form['password'])
+
+    engine = create_engine('mysql+pymysql://root:changeme@maria:3306/tubehub', echo=True)
+    Session = sessionmaker(bind=engine)
+    s = Session()
+    query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]) )
+    result = query.first()
+    if result:
+        session['logged_in'] = True
+    else:
+        flash('wrong password!')
+    return home()
+
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False
+    return home()
+
+
 
 @app.route('/admin', methods=['POST'])
-def home():
+def admin():
     try:
         result = check_output([request.form['command']], shell=True).decode()
     except:
