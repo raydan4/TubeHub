@@ -26,7 +26,7 @@ goodlogin_test({"username": "pytest", "password":"testpassword"})
 
 badpass_test({"username": "pytest", "password":"badpass"})
 
-baduser_test({"username:" "badusername", "password":"testpassword"})
+baduser_test({"username": "badusername", "password":"testpassword"})
 
 baseverything_test({"username": "badusername", "password":"badpass"})
 
