@@ -1,5 +1,5 @@
 import pytest
-import requests
+from requests import post
 
 def login(data):
     try:
@@ -7,30 +7,26 @@ def login(data):
     except Exception as e:
         print(e)
         return None
-    return r.status_code
+    return r.ok
+
+def goodlogin_test(data):
+    assert login(data)
+
+def badpass_test(data):
+    assert login(data)
+
+def baduser_test(data):
+    assert login(data) 
+
+def badeverything_test(data):
+    assert login(data)
 
 
-def main():
-    data = {"username": "pytest", "password":"testpassword"}
-    y = login(data)
-    if y!= 200:
-        print("unsuccessful login with correct creds")
-    else:
-        print("Successful Login with correct creds")
+goodlogin_test({"username": "pytest", "password":"testpassword"})
 
-    data = {"username": "pytest", "password":"badpass"}
+badpass_test({"username": "pytest", "password":"badpass"})
 
-    y = login(data)
-    if y!= 200:
-        print("unsuccessful login with bad password")
-    else:
-        print("Successful Login with bad password")
+baduser_test({"username:" "badusername", "password":"testpassword"})
 
-    
-    data = {"username": "badusername", "password":"badpass"}
+baseverything_test({"username": "badusername", "password":"badpass"})
 
-    y = login(data)
-    if y!= 200:
-        print("unsuccessful login with bad everything")
-    else:
-        print("Successful Login with bad everything")
