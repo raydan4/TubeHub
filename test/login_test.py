@@ -1,36 +1,18 @@
 import pytest
-import requests
+from requests import post
 
 def login(data):
-    try:
-        r = requests.post("https://localhost/login", data=data, verify=False)
-    except Exception as e:
-        print(e)
-        return None
-    return r.status_code
+    return post("http://localhost/login", data=data).ok
 
+def test_goodlogin():
+    assert login({"username": "pytest", "password":"testpassword"})
 
-def main():
-    data = {"username": "pytest", "password":"testpassword"}
-    y = login(data)
-    if y!= 200:
-        print("unsuccessful login with correct creds")
-    else:
-        print("Successful Login with correct creds")
+def test_badpass():
+    assert not login({"username": "pytest", "password":"badpass"})
 
-    data = {"username": "pytest", "password":"badpass"}
+def test_baduser():
+    assert not login({"username": "badusername", "password":"testpassword"}) 
 
-    y = login(data)
-    if y!= 200:
-        print("unsuccessful login with bad password")
-    else:
-        print("Successful Login with bad password")
+def test_badeverything():
+    assert not login({"username": "badusername", "password":"badpass"})
 
-    
-    data = {"username": "badusername", "password":"badpass"}
-
-    y = login(data)
-    if y!= 200:
-        print("unsuccessful login with bad everything")
-    else:
-        print("Successful Login with bad everything")

@@ -3,20 +3,22 @@ from subprocess import check_output
 from flask import (
         Blueprint,
         Flask,
+        flash,
+        jsonify,
+        redirect,
         render_template,
         request,
-        jsonify
+        url_for,
+        session,
+        abort
 )
 
 #Logan's potentially repetitive imports
-from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, abort
 import os
 from sqlalchemy.orm import sessionmaker
 from tabledef import *
 
 from blueprints.searchAPI.search import search
-from blueprints.accountAPI.account import account
 from blueprints.videoAPI.video import video
 
 app = Flask(__name__)
@@ -39,19 +41,18 @@ def login():
     Session = sessionmaker(bind=engine)
     s = Session()
     query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]) )
+    s.close()
     result = query.first()
     if result:
         session['logged_in'] = True
+        return home()
     else:
-        flash('wrong password!')
-    return home()
+        abort(401)
 
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
     return home()
-
-
 
 @app.route('/admin', methods=['POST'])
 def admin():
@@ -63,7 +64,6 @@ def admin():
     
 
 app.register_blueprint(search, url_prefix='/search')
-app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(video, url_prefix='/video')
 
 if __name__ == '__main__':
