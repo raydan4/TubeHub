@@ -3,7 +3,7 @@ from requests import post
 
 def login(data):
     try:
-        r = requests.post("https://localhost/login", data=data, verify=False)
+        r = post("https://localhost/login", data=data, verify=False)
     except Exception as e:
         print(e)
         return None
