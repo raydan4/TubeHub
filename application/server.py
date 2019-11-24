@@ -3,17 +3,14 @@ from subprocess import check_output
 from flask import (
         Blueprint,
         Flask,
-        flash,
-        jsonify,
-        redirect,
         render_template,
         request,
-        url_for,
-        session,
-        abort
+        jsonify
 )
 
 #Logan's potentially repetitive imports
+from flask import Flask
+from flask import Flask, flash, redirect, render_template, request, session, abort
 import os
 from sqlalchemy.orm import sessionmaker
 from tabledef import *
@@ -41,18 +38,19 @@ def login():
     Session = sessionmaker(bind=engine)
     s = Session()
     query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]) )
-    s.close()
     result = query.first()
     if result:
         session['logged_in'] = True
-        return home()
     else:
-        abort(401)
+        flash('wrong credentials!')
+    return home()
 
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
     return home()
+
+
 
 @app.route('/admin', methods=['POST'])
 def admin():
