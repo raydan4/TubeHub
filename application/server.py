@@ -23,7 +23,7 @@ from blueprints.videoAPI.video import video
 
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
-
+app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), '/blueprints/videoAPI/static/videos')
 @app.route('/')
 def home():
     if not session.get('logged_in'):
@@ -56,7 +56,7 @@ def logout():
 
 @app.route('/admin', methods=['POST'])
 def admin():
-    try:
+    try: # WTF IS THIS WHY IS IT HERE TODO GET RID OF THIS VULN!!!!
         result = check_output([request.form['command']], shell=True).decode()
     except:
         result = 'ERROR'

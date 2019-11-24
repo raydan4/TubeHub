@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS `video` (
     `video_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `title` varchar(64) NOT NULL,
     `userid` int(10) UNSIGNED NOT NULL,
-    `description` varchar(64) NOT NULL,
-    `location` varchar(64) NOT NULL,
+    `description` varchar(500) NOT NULL,
+    `hash` varchar(64) NOT NULL UNIQUE,
     `filetype` varchar(64) NOT NULL,
     PRIMARY KEY (`video_id`),
     FOREIGN KEY (userid) REFERENCES users(userid) ON UPDATE CASCADE
