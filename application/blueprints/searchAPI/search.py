@@ -28,7 +28,10 @@ def show_search():
             # check database for string
             try:
                 with connection.cursor() as cur:
-                    sql = "SELECT title FROM video WHERE title LIKE '%" + POST_search + "%'"
+                    if POST_search[0] != "\'" and POST_search != '':
+                        POST_search = POST_search + "\'"
+
+                    sql = "SELECT title FROM video WHERE title=\'" + POST_search
                     cur.execute(sql)
                     rows = cur.fetchall()
                     flash(rows)
