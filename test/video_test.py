@@ -15,11 +15,11 @@ s = Session()
 s.post('http://localhost/login', data={'username':'pytest', 'password':'testpassword'})
 
 # Unauthed can't upload
-def test_upload():
+def test_upload_unauth():
     assert not o.post('http://localhost/video/upload', data={'userid':'1', 'title':'Astley', 'description':'haha goteem', 'link':astley}).ok
 
 # Authed can upload
-def test_upload_unauth():
+def test_upload():
     assert s.post('http://localhost/video/upload', data={'userid':'1', 'title':'Astley', 'description':'haha goteem', 'link':astley}).ok
 
 # Unauthed can watch

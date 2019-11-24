@@ -42,8 +42,8 @@ def show_upload():
         username = session.get('username')
         # Video is Present
         video = request.files.get('video')
-        if video and video.filename:
-            filehash = sha3_256(video.read().hexdigest())
+        if video:
+            filehash = sha3_256(video.read()).hexdigest()
             filetype = video.content_type
             # Save video file to server (no validation lol all in same directory)
             video.save(os.path.join(VIDEO_DIR, filehash))
@@ -51,7 +51,7 @@ def show_upload():
             # Get file from link
             link = request.form.get('link')
             if not link:
-                abort(400)
+                abort(400, description='No video file')
             video = get(link)
             filehash = sha3_256(video.content).hexdigest()
             filetype = video.headers.get('Content-Type')
