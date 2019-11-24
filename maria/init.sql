@@ -12,12 +12,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 CREATE TABLE IF NOT EXISTS `video` (
     `video_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `title` varchar(64) NOT NULL,
-    `userid` int(10) UNSIGNED NOT NULL,
+    `username` varchar(64) NOT NULL,
     `description` varchar(500) NOT NULL,
     `hash` varchar(64) NOT NULL UNIQUE,
     `filetype` varchar(64) NOT NULL,
     PRIMARY KEY (`video_id`),
-    FOREIGN KEY (userid) REFERENCES users(userid) ON UPDATE CASCADE
+    FOREIGN KEY (`username`) REFERENCES users(`username`) ON UPDATE CASCADE
 ) engine=innodb;
 
 -- Add test user for travis

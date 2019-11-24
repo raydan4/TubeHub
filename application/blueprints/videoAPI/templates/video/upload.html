@@ -1,1 +1,27 @@
-{% extends "base.html" %}
+{% block upload %}
+<body>
+<form method="post" enctype="multipart/form-data">
+<div>
+    <div>
+        <label for="title" id="title">
+        <input name="title" id="title" placeholder="title" required="required">
+    </div>
+    <div>
+        <label for="description" id="description">
+        <input name="description" id="description" placeholder="description" required="required">
+    </div>
+    <div>
+        <label for="video" id="video">
+        <input type="file" accept="video/*" name="video" id"video" placeholder="video">
+    </div>
+    <div>
+        <label for="link" id="link">
+        <input type="url" name="link" id="link" placeholder="link">
+    </div>
+    <div>
+        <button>Upload</button>
+    </div>
+</div>
+</form>
+</body>
+{% endblock %}

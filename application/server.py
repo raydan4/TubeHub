@@ -23,7 +23,8 @@ from blueprints.videoAPI.video import video
 
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
-app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), '/blueprints/videoAPI/static/videos')
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1042 # 50 MB
+
 @app.route('/')
 def home():
     if not session.get('logged_in'):
