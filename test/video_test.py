@@ -24,11 +24,11 @@ def test_upload_unauth():
 
 # Unauthed can watch
 def test_watch():
-    assert s.get(f'http://localhost/video/watch?hash={vid_hash}').ok
+    assert o.get(f'http://localhost/video/watch?hash={vid_hash}').ok
 
 # Authed can watch
 def test_watch():
-    assert o.get(f'http://localhost/video/watch?hash={vid_hash}').ok
+    assert s.get(f'http://localhost/video/watch?hash={vid_hash}').ok
 
 # Unauthed can't delete
 def test_delete():
@@ -37,6 +37,10 @@ def test_delete():
 # Authed can delete
 def test_delete():
     assert s.post('http://localhost/video/delete', data={'hash':vid_hash}).ok
+
+# Authed can't watch anymore
+def test_watch_after_delete():
+    assert not s.get(f'http://localhost/video/watch?hash={vid_hash}').ok
 
 # Logout
 s.get('http://localhost/video/logout')
