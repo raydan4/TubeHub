@@ -45,6 +45,7 @@ def login():
     result = query.first()
     if result:
         session['logged_in'] = True
+        session['username'] = POST_USERNAME
         return home()
     else:
         abort(401)
@@ -52,6 +53,7 @@ def login():
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
+    session.pop('username', None)
     return home()
 
 @app.route('/admin', methods=['POST'])
