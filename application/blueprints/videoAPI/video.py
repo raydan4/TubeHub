@@ -32,7 +32,6 @@ def show_videos():
 def show_upload():
     if request.method == 'POST':
         # Get parameters from request
-        userid = request.form.get('userid')
         title = request.form.get('title')
         description = request.form.get('description')
         
@@ -40,6 +39,7 @@ def show_upload():
         # Logged in
         if not session.get('logged_in'):
             abort(401)
+        username = session.get('username')
         # Video is Present
         video = request.files.get('video')
         if video and video.filename:
@@ -65,8 +65,8 @@ def show_upload():
         # Add video info to database
         try:
             with connection.cursor() as cur:
-                sql = "INSERT INTO `video` (`title`, `userid`, `description`, `hash`, `filetype`) VALUES (%s, %s, %s, %s, %s)"
-                cur.execute(sql, (title, userid, description, filehash, filetype))
+                sql = "INSERT INTO `video` (`title`, `username`, `description`, `hash`, `filetype`) VALUES (%s, %s, %s, %s, %s)"
+                cur.execute(sql, (title, username, description, filehash, filetype))
                 connection.commit()
         except:
             abort(404)
@@ -94,14 +94,14 @@ def show_delete():
     connection = connect_to_db()
     try:
         with connection.cursor() as cur:
-            sql = f'DELETE FROM `video` WHERE `hash` = "{filehash}";'
+            sql = f'DELETE FROM `video` WHERE `hash` = "{filehash}" AND `username` = "{session.get("username")}";'
             cur.execute(sql)
             connection.commit()
         
         # Remove file from disk
         os.remove(os.path.join(VIDEO_DIR, filehash))
-    except:
-        abort(400)
+    except Exception as e:
+        abort(400, description=e)
     finally:
         connection.close()
     return redirect('/')
@@ -111,23 +111,26 @@ def show_watch():
     try:
         # Source from db
         filehash = request.args.get('hash')
+        if not filehash:
+            abort(400)
         source = os.path.join(WATCH_DIR, filehash)
 
         # Get other fields from database
         connection = connect_to_db()
         try:
             with connection.cursor() as cur:
-                sql = f'SELECT `title`, `filetype`,`description` FROM `video` WHERE `hash` = "{filehash}";'
+                sql = f'SELECT `title`, `username`, `filetype`,`description` FROM `video` WHERE `hash` = "{filehash}";'
                 cur.execute(sql)
                 result = cur.fetchone()
                 title = result.get('title')
+                username = result.get('username')
                 filetype = result.get('filetype')
                 description = result.get('description')
-        except Exception as e:
-            abort(404, description=e)
+        except:
+            abort(404)
         finally:
             connection.close()
-        return render_template('/video/watch.html', title=title, source=source, filetype=filetype, description=description)
+        return render_template('/video/watch.html', title=title, source=source, username=username, filetype=filetype, description=description)
     except TemplateNotFound:
         abort(404)
 

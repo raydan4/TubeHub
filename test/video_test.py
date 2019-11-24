@@ -27,11 +27,11 @@ def test_watch():
     assert o.get(f'http://localhost/video/watch?hash={vid_hash}').ok
 
 # Authed can watch
-def test_watch():
+def test_watch_unauth():
     assert s.get(f'http://localhost/video/watch?hash={vid_hash}').ok
 
 # Unauthed can't delete
-def test_delete():
+def test_delete_unauth():
     assert not o.post('http://localhost/video/delete', data={'hash':vid_hash}).ok
 
 # Authed can delete
