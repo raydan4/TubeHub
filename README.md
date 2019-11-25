@@ -15,4 +15,4 @@ A video sharing platform with some vulnerabilities.
 
 ### Usage
 To build:
-docker-compose up -d --build
+`docker-compose up -d --build`
