@@ -40,13 +40,13 @@ def show_search():
                 connection.close()
             
         if request.method == 'GET':
-            return render_template('/search/search.html')
+            return render_template('/search/results.html')
         
         return render_template('/search/search.html', data=data)
     except TemplateNotFound:
         abort(404)
 
-@search.route('/results')
+@search.route('/results', methods=['POST', 'GET'])
 def show_results():
     try:
         if request.method == 'POST':
