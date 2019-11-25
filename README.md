@@ -12,3 +12,7 @@ A video sharing platform with some vulnerabilities.
 
 ### Site Mockup
 * [Interactive Mockup](https://invis.io/RKU16W7SW2X#/385075863_Results)
+
+### Usage
+To build:
+docker-compose up -d --build
