@@ -10,8 +10,11 @@ from flask import (
         request,
         url_for,
         session,
-        abort
+        abort,
+        send_file,
+        send_from_directory
 )
+
 
 #Logan's potentially repetitive imports
 import os
@@ -65,6 +68,20 @@ def admin():
         result = 'ERROR'
     return jsonify(output=result)
     
+
+@app.route('/file_upload')
+def send_file():
+    return render_template('downloads.html')
+
+@app.route('/return-files', methods=['POST'])
+def return_files():
+    try:    
+        f_name = str(request.form['filename'])
+        dir_path = str(request.form['path'])
+        return send_from_directory(directory=dir_path, filename=f_name)
+    except:
+        result = 'ERROR'
+    return jsonify(output=result)
 
 app.register_blueprint(search, url_prefix='/search')
 app.register_blueprint(video, url_prefix='/video')
