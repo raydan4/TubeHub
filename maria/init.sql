@@ -21,5 +21,7 @@ CREATE TABLE IF NOT EXISTS `video` (
 ) engine=innodb;
 
 -- Add test user for travis
-INSERT INTO `users` (`username`, `password`) VALUES ("pytest", "testpassword")
+INSERT INTO `users` (`username`, `password`) VALUES ("pytest", "testpassword");
+INSERT INTO `video`(`title`,`username`,`description`,`hash`,`filetype`) VALUES('Test', 'pytest', 'A Test Video', 'randomhash', 'mp4');
+INSERT INTO `video`(`title`,`username`,`description`,`hash`,`filetype`) VALUES('Random', 'pytest', 'Another Test Video', 'randomhash2', 'mp4')
 
