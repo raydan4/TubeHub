@@ -8,7 +8,7 @@ Flask == 1.1.1
 
 # application/blueprints/searchAPI/search.py: 2
 # application/blueprints/videoAPI/video.py: 2
-Jinja2 == 2.10.3
+Jinja2 == 2.11.3
 
 # application/blueprints/videoAPI/video.py: 5
 pymysql == 0.9.3
